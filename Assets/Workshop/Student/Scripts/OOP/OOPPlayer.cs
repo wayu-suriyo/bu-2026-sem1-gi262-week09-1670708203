@@ -14,15 +14,16 @@ namespace Solution
 
         public bool isAutoMoving = false; // Flag to control auto-movement
 
-        public override void SetUP()
-        {
-            base.SetUP();
-            PrintInfo();
-            GetRemainEnergy();
-            inventory = GetComponent<Inventory>();
-            moveAction = InputSystem.actions.FindAction("Move");
-            fireAction = InputSystem.actions.FindAction("Attack");
-        }
+         public override void SetUP()
+         {
+             base.SetUP();
+             PrintInfo();
+             GetRemainEnergy();
+             inventory = GetComponent<Inventory>();
+             moveAction = InputSystem.actions.FindAction("Move");
+             fireAction = InputSystem.actions.FindAction("Attack");
+             actionHistoryManager.SaveStateForUndo(new Vector2(positionX, positionY));
+         }
 
         public void Update()
         {
@@ -71,7 +72,7 @@ namespace Solution
             base.Move(direction);
             mapGenerator.MoveEnemies();
             // Save the state AFTER the move
-      
+            actionHistoryManager.SaveStateForUndo(new Vector2(positionX, positionY));
         }
 
         public void UseFireStorm()
